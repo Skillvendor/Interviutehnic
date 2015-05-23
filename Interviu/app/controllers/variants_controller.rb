@@ -15,6 +15,7 @@ class VariantsController < ApplicationController
   # GET /variants/new
   def new
     @variant = Variant.new
+    @ids = Product.pluck(:id)
   end
 
   # GET /variants/1/edit
@@ -69,6 +70,6 @@ class VariantsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def variant_params
-      params.require(:variant).permit(:is_active, :price, :quantity)
+      params.require(:variant).permit(:is_active, :price, :quantity, :product_id)
     end
 end

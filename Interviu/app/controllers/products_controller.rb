@@ -51,6 +51,21 @@ class ProductsController < ApplicationController
     end
   end
 
+  def buy
+   @user = current_buyer
+   @product = Product.find(id: params[:id])
+   if @user.credits > @product.price 
+      @user.credits -= @product.price
+      @user.save!
+      @product.quantity -= 1
+      @product.save!
+      flash[:succes] = " Bought!"
+   else
+    flash[:danger] = "Money Money"
+   end
+
+  end
+
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy

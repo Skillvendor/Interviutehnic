@@ -8,8 +8,19 @@
 </head>
 <body>
 <div id="container">
+ <div id="user_nav">
+   <% if buyer_signed_in? %>
+     Logged as <%= current_buyer.email %>
+     <%= link_to "Edit profile", edit_buyer_registration_path %>
+     <%= link_to "Logout", destroy_buyer_session_path, method: :delete %>
+   <% else %>
+     <%= link_to "Sign up", new_buyer_registration_path %>
+     <%= link_to "Login", new_buyer_session_path %>
+   <% end %>
+ </div>
+
  <% flash.each do |name, msg| %>
-   <%= content_tag :div, msg, id: "flash_#{name}" %>
+	  <%= content_tag :div, msg, id: "flash_#{name}" %>
  <% end %>
 
 <%= yield %>
