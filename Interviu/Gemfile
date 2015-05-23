@@ -16,7 +16,7 @@ gem 'kaminari'
 #pagination gives performance gains when many items have to be displayed(huge performance gains) however nothing to paginate
 gem 'devise'
 #For Login
-
+gem 'pry'
 gem 'faker'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

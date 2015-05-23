@@ -6,9 +6,8 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Description</th>
-      <th>Price</th>
       <th>Quantity</th>
+      <th>Price</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,10 +15,10 @@
   <tbody>
     <% @display.each do |display| %>
       <tr>
-        <td><%= display[:title] %></td>
-        <td><%= display[:price]  %></td>
-        <td><%= display[:quantity]  %></td>
-        <td><%= button_to 'Buy', buy_path(id: display[:variant_id]), method: :post, id: "Ajax-button" %></td>
+        <td><%= display[2] %></td>
+        <td><%= display[1]  %></td>
+        <td><%= display[0]  %></td>
+        <td><%= button_to 'Buy', buy_path(id: display[3]), method: :post, id: "Ajax-button" %></td>
       </tr>
     <% end %>
   </tbody>

@@ -12,10 +12,12 @@ Product.create(title: "Servetele", description: "De masa")
 Product.create(title: "Laptopuri", description: "Alienware")
 Product.create(title: "Mac", description: "nu cumpara...!")
 
-1000.times do |g|
+
+
+10.times do |g|
 	Product.create(title: Faker::Commerce.product_name, description: "Who Cares..")
 end
 
-10000.times do |c|
-	Variant.create(price: (rand(100)).floor, quantity: (rand(100)).floor , product_id: rand(1..600).floor)
+100.times do |c|
+	Variant.create(price: (rand(100)).ceil, quantity: (rand(10).ceil).floor , product_id: rand(1..10).floor)
 end
