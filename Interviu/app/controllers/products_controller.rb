@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
 
-    @products = Product.all.includes(:variants)
+    @products = Product.all
     @display = []
     @products.each do |product|
       @children = product.variants.where(is_active: true).order(:price)
