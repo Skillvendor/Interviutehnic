@@ -31,10 +31,9 @@ class ProductsController < ApplicationController
       flash[:succes] = " Bought!"
       @variant.coupons.create(code: SecureRandom.hex(20))
    else
-    flash[:danger] = "Money Money"
+    flash[:danger] = "No Money Money"
    end
    redirect_to :back
-
   end
 
 
