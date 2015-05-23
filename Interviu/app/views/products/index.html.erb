@@ -15,9 +15,9 @@
   <tbody>
     <% @display.each do |display| %>
       <tr>
-        <td><%= display["price"] %></td>
+        <td><%= display["title"] %></td>
         <td><%= display["quantity"]  %></td>
-        <td><%= display["title"]  %></td>
+        <td><%= display["price"]  %></td>
         <td><%= button_to 'Buy', buy_path(id: display["variant_id"]), method: :post, id: "Ajax-button" %></td>
       </tr>
     <% end %>

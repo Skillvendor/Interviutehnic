@@ -6,7 +6,10 @@ class ProductsController < ApplicationController
   def index
     @display = []
 
-    query = "SELECT min(v.price) AS 'price', v.quantity AS 'quantity', p.title AS 'title', v.id AS 'variant_id' FROM variants AS 'v' INNER JOIN products AS 'p' ON (v.product_id = p.id) where v.is_active = 't' GROUP BY product_id" 
+    query = "SELECT min(v.price) AS 'price', v.quantity AS 'quantity', p.title AS 'title', v.id AS 'variant_id' 
+             FROM variants AS 'v' INNER JOIN products AS 'p' ON (v.product_id = p.id) 
+             where v.is_active = 't' 
+             GROUP BY product_id" 
     
     @display = ActiveRecord::Base.connection.execute(query)
     @display = Kaminari.paginate_array(@display).page(params[:page])  
