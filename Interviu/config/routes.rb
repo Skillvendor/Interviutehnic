@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
   devise_for :buyers
-  resources :variants
 
-  resources :products
   post "/buy/:id" , :to => "products#buy", as: 'buy'
+  get "products", :to => "products#index", as: 'products'
   root 'products#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
