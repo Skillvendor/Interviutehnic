@@ -18,22 +18,26 @@ class ProductsController < ApplicationController
 
 
   def buy
-   @user = current_buyer
-   @variant = Variant.find_by_id(params[:id])
-   if @user.credits > @variant.price 
+    @user = current_buyer
+    @variant = Variant.find_by_id(params[:id])
+
+    if @user.credits > @variant.price 
       @user.credits -= @variant.price
       @user.save!
       @variant.quantity -= 1
+
       if @variant.quantity == 0
         @variant.is_active = false
       end
+
       @variant.save!
       flash[:succes] = " Bought!"
       @variant.coupons.create(code: SecureRandom.hex(20))
-   else
-    flash[:danger] = "No Money Money"
-   end
-   redirect_to :back
+    else
+      flash[:danger] = "No Money Money"
+    end
+
+    redirect_to :back
   end
 
 
