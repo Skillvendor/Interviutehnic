@@ -47,6 +47,6 @@ group :development, :test do
   gem 'spring'
 
   #lol_dba makes it easy to see where indexes should have been created (indexes improve search speed)
-
+  gem 'bullet'
 end
 

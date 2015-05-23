@@ -9,15 +9,15 @@ class ProductsController < ApplicationController
     @products = Product.all
     @display = []
     @products.each do |product|
-      @children = product.variants.where(is_active: true).order(:price)
+      @children = product.variants.where(is_active: true).order(:price).first
       if @children.present?
       @display << {
                     id: product.id,
                     title: product.title,
                     description: product.description,
-                    price:  @children.first.price,
-                    quantity:  @children.first.quantity,
-                    variant_id:  @children.first.id
+                    price:  @children.price,
+                    quantity:  @children.quantity,
+                    variant_id:  @children.id
                   }
       end
     end
