@@ -17,16 +17,15 @@
     <% @display.each do |display| %>
       <tr>
         <td><%= display[:title] %></td>
-        <td><%= display[:description] %></td>
         <td><%= display[:price]  %></td>
         <td><%= display[:quantity]  %></td>
-        <td><%= link_to 'Buy', buy_path(id: display[:variant_id]), method: :post %></td>
+        <td><%= button_to 'Buy', buy_path(id: display[:variant_id]), method: :post, id: "Ajax-button" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
+<%= paginate @display %>
 
 <%= link_to 'New Product', new_product_path %>

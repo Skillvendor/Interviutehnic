@@ -5,23 +5,25 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
+    @display = []
 
     @products = Product.all
-    @display = []
     @products.each do |product|
-      @children = product.variants.where(is_active: true).order(:price).first
-      if @children.present?
+      @children = product.variants.where(is_active: true).order(:price).
+                                   select(:id,:price,:quantity).first
+
+     if @children.present?
       @display << {
                     id: product.id,
                     title: product.title,
-                    description: product.description,
                     price:  @children.price,
                     quantity:  @children.quantity,
                     variant_id:  @children.id
-                  }
+                 }
       end
     end
-
+    
+    
     @display = Kaminari.paginate_array(@display).page(params[:page])
 
   end
