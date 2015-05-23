@@ -9,15 +9,15 @@ class ProductsController < ApplicationController
     @products = Product.all
     @display = []
     @products.each do |product|
-      @children = product.variants
+      @children = product.variants.where(is_active: true).order(:price)
       if @children.present?
       @display << {
                     id: product.id,
                     title: product.title,
                     description: product.description,
-                    price: product.variants.order(:price).first.price,
-                    quantity: product.variants.order(:price).first.quantity,
-                    variant_id: product.variants.order(:price).first.id
+                    price:  @children.first.price,
+                    quantity:  @children.first.quantity,
+                    variant_id:  @children.first.id
                   }
       end
     end
@@ -75,8 +75,12 @@ class ProductsController < ApplicationController
       @user.credits -= @variant.price
       @user.save!
       @variant.quantity -= 1
+      if @variant.quantity == 0
+        @variant.is_active = false
+      end
       @variant.save!
       flash[:succes] = " Bought!"
+      @variant.coupons.create(code: SecureRandom.hex(20))
    else
     flash[:danger] = "Money Money"
    end
