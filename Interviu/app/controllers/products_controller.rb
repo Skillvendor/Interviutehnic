@@ -22,6 +22,8 @@ class ProductsController < ApplicationController
       end
     end
 
+    @display = Kaminari.paginate_array(@display).page(params[:page])
+
   end
 
   # GET /products/1

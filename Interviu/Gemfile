@@ -13,6 +13,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+gem 'kaminari'
+#pagination gives performance gains when many items have to be displayed(huge performance gains) however nothing to paginate
 gem 'devise'
 #For Login
 # Use jquery as the JavaScript library
