@@ -5,7 +5,23 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
+
     @products = Product.all
+    @display = []
+    @products.each do |product|
+      @children = product.variants
+      if @children.present?
+      @display << {
+                    id: product.id,
+                    title: product.title,
+                    description: product.description,
+                    price: product.variants.order(:price).first.price,
+                    quantity: product.variants.order(:price).first.quantity,
+                    variant_id: product.variants.order(:price).first.id
+                  }
+      end
+    end
+
   end
 
   # GET /products/1
@@ -54,16 +70,17 @@ class ProductsController < ApplicationController
 
   def buy
    @user = current_buyer
-   @product = Product.find(id: params[:id])
-   if @user.credits > @product.price 
-      @user.credits -= @product.price
+   @variant = Variant.find_by_id(params[:id])
+   if @user.credits > @variant.price 
+      @user.credits -= @variant.price
       @user.save!
-      @product.quantity -= 1
-      @product.save!
+      @variant.quantity -= 1
+      @variant.save!
       flash[:succes] = " Bought!"
    else
     flash[:danger] = "Money Money"
    end
+   redirect_to :back
 
   end
 

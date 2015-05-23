@@ -7,16 +7,20 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th>Price</th>
+      <th>Quantity</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @products.each do |product| %>
+    <% @display.each do |display| %>
       <tr>
-        <td><%= product.title %></td>
-        <td><%= product.description %></td>
-        <td><%= link_to 'Buy', buy_path(product.id) %></td>
+        <td><%= display[:title] %></td>
+        <td><%= display[:description] %></td>
+        <td><%= display[:price]  %></td>
+        <td><%= display[:quantity]  %></td>
+        <td><%= link_to 'Buy', buy_path(id: display[:variant_id]), method: :post %></td>
       </tr>
     <% end %>
   </tbody>
