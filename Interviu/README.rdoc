@@ -1,28 +1,39 @@
-== README
+Eforturile mele s-au dus in general pe optimizare 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Pentru cazul n+1 generat de Products->Variants am incercat eager loading 
+dar timpii s-au marit:
 
-Things you may want to cover:
+    @products = Product.includes(:variants).where("variants.is_active" => true).order("variants.price")
+    @products.each do |product|
+    @children = product.variants.first
 
-* Ruby version
+     if @children.present?
+      @display << {
+                    id: product.id,
+                    title: product.title,
+                    price:  @children.price,
+                    quantity:  @children.quantity,
+                    variant_id:  @children.id
+                  }
+      end
+     end
 
-* System dependencies
+sau:
 
-* Configuration
+has_many :active_variants,  -> { where(is_active: true).order(:price) }, class_name: "Variant" introdus
+in modelul Product si
 
-* Database creation
+    @products = Product.includes(:active_variants)
+    @products.each do |product|
+    @children = product.variants.first
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+     if @children.present?
+      @display << {
+                    id: product.id,
+                    title: product.title,
+                    price:  @children.price,
+                    quantity:  @children.quantity,
+                    variant_id:  @children.id
+                  }
+      end
+     end
