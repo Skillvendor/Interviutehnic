@@ -10,7 +10,7 @@ class ProductsController < ApplicationController
              FROM variants AS 'v' INNER JOIN products AS 'p' ON (v.product_id = p.id) 
              where v.is_active = 't' 
              GROUP BY product_id" 
-    
+
     @display = ActiveRecord::Base.connection.execute(query)
     @display = Kaminari.paginate_array(@display).page(params[:page])  
   end
@@ -24,13 +24,13 @@ class ProductsController < ApplicationController
     if @user.credits > @variant.price 
       @user.credits -= @variant.price
       @user.save!
-      @variant.quantity -= 1
 
-      if @variant.quantity == 0
+      if @variant.quantity == 1
         @variant.is_active = false
       end
-
+      Variant.decrement_counter(:quantity, @variant.id)
       @variant.save!
+      
       flash[:succes] = " Bought!"
       @variant.coupons.create(code: SecureRandom.hex(20))
     else

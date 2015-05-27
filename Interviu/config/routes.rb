@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   post "/buy/:id" , :to => "products#buy", as: 'buy'
   get "products", :to => "products#index", as: 'products'
   root 'products#index'
+
+  resources :products
+  resources :variants
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
