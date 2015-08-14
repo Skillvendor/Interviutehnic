@@ -8,4 +8,20 @@ class Buyer < ActiveRecord::Base
 
   validates :email, presence: true,
                        uniqueness: { case_sensitive: false }
+
+
+  def self.buy(user,variant)
+		transaction do
+		  new_amount = user.credits - variant.price
+		  user.update_attributes!(:credits => new_amount)
+
+		  if variant.quantity == 1
+        variant.update_attributes(:is_active => false)
+      end
+
+		  Variant.decrement_counter(:quantity, variant.id)
+	    variant.save!
+	    variant.coupons.create!(code: SecureRandom.hex(20))
+		end
+	end
 end

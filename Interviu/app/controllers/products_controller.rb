@@ -5,13 +5,20 @@ class ProductsController < ApplicationController
 
   def index
     @display = []
+    @products = Product.includes(:variants).where("variants.is_active" => true).order("variants.price")
 
-    query = "SELECT min(v.price) AS 'price', v.quantity AS 'quantity', p.title AS 'title', v.id AS 'variant_id' 
-             FROM variants AS 'v' INNER JOIN products AS 'p' ON (v.product_id = p.id) 
-             where v.is_active = 't' 
-             GROUP BY product_id" 
-
-    @display = ActiveRecord::Base.connection.execute(query)
+    @products.each do |product|
+      @children = product.variants.first
+      if @children.present?
+        @display << {
+                      id: product.id,
+                      title: product.title,
+                      price:  @children.price,
+                      quantity:  @children.quantity,
+                      variant_id:  @children.id
+                    }
+      end
+    end
     @display = Kaminari.paginate_array(@display).page(params[:page])  
   end
 
@@ -21,22 +28,17 @@ class ProductsController < ApplicationController
     @user = current_buyer
     @variant = Variant.find_by_id(params[:id])
 
-    if @user.credits > @variant.price 
-      @user.credits -= @variant.price
-      @user.save!
-
-      if @variant.quantity == 1
-        @variant.is_active = false
-      end
-      Variant.decrement_counter(:quantity, @variant.id)
-      @variant.save!
-      
-      flash[:succes] = " Bought!"
-      @variant.coupons.create(code: SecureRandom.hex(20))
-    else
-      flash[:danger] = "No Money Money"
+    unless @user.credits > @variant.price
+      flash[:danger] = "You don't have enough money"
+      redirect_to :back
     end
 
+    unless Buyer.buy(@user,@variant)
+      flash[:danger] = "Couldn't process your request, try again later"
+      redirect_to :back
+    end
+
+    flash[:succes] = "Thank you for your purchase"
     redirect_to :back
   end
 
